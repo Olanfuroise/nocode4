@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>No Coins - Quêtes IRL</title>
+  <link rel="stylesheet" href="Untitled-3.css">
+</head>
+
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <h1>🎮 No Coins - Quêtes IRL</h1>
+    <p>Travaille, gagne des points et construis ton monde Minecraft !</p>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <div class="grid">
+
+      <!-- ===== BOUTIQUE ===== -->
+      <section class="card">
+        <h2>💰 Boutique</h2>
+        <p>Points disponibles : <span id="points">0</span></p>
+        <div id="shop" class="shop-items"></div>
+      </section>
+
+      <!-- ===== AJOUT DE QUÊTE PERSO ===== -->
+      <section class="card">
+        <h2>➕ Ajouter une quête perso</h2>
+        <div class="form">
+          <input id="questName" placeholder="Ex: 1h de SVT">
+          
+          <select id="difficulty">
+            <option value="1">⭐ Niveau 1</option>
+            <option value="2">⭐⭐ Niveau 2</option>
+            <option value="3">⭐⭐⭐ Niveau 3</option>
+            <option value="4">⭐⭐⭐⭐ Niveau 4</option>
+            <option value="5">⭐⭐⭐⭐⭐ Niveau 5</option>
+          </select>
+
+          <input id="questDuration" type="number" placeholder="Durée (minutes, max 240)">
+          <button onclick="addQuest()">Ajouter</button>
+        </div>
+      </section>
+
+      <!-- ===== QUÊTES PERSO EN COURS ===== -->
+      <section class="card">
+        <h2>📋 Quêtes perso en cours</h2>
+        <div id="quests"></div>
+      </section>
+
+      <!-- ===== QUÊTES JOURNALIÈRES ===== -->
+      <section class="card">
+        <h2>📅 Quêtes journalières (max 3 par jour)</h2>
+        <div id="dailyList" class="daily"></div>
+      </section>
+
+      <!-- ===== HISTORIQUE ===== -->
+      <section class="card history-card">
+        <div class="history-header">
+          <h2>📜 Historique</h2>
+          <div>
+            <button class="danger" onclick="clearHistory()">🗑️ Supprimer l’historique</button>
+            <button class="reset" onclick="resetAll()">🔄 Reset complet</button>
+          </div>
+        </div>
+
+        <ul id="history"></ul>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>Prototype local - No Coins relié à Minecraft</p>
+  </footer>
+
+  <!-- ===== SCRIPT ===== -->
+  <script src="Untitled-1.js"></script>
+
+</body>
+</html>
