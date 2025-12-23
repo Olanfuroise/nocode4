@@ -346,7 +346,7 @@ function renderShop() {
 // ⭐⭐ FONCTION QUI ENVOIE LA COMMANDE À MINECRAFT ⭐⭐
 async function sendToMinecraft(block) {
   try {
-    await fetch("https://TON-URL-RAILWAY/cmd", {
+    await fetch("https://minecraft-api-production-39aa.up.railway.app/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -439,3 +439,4 @@ renderQuests();
 renderHistory();
 renderShop();
 renderDailyQuests();
+
