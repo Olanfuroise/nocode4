@@ -438,6 +438,9 @@ loadData();
 renderQuests();
 renderHistory();
 renderShop();
-renderDailyQuests();
+renderDailyQuests(); 
+
+async function testMinecraft() { alert("Test en cours..."); try { const response = await fetch("https://minecraft-api-production-39aa.up.railway.app/cmd", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ command: "say TEST depuis ton site NoCoins", key: "123456789" }) }); const text = await response.text(); alert("Réponse API : " + text); } catch (err) { alert("Erreur : API inaccessible"); } }
+
 
 
