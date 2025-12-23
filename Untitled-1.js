@@ -56,12 +56,10 @@ loadData();
 // ✅ SECTION 2 — QUÊTES JOURNALIÈRES
 // ===========================================
 
-// Tire 3 quêtes aléatoires par jour
 function getDailyQuests() {
   const today = new Date().toDateString();
   const savedDate = localStorage.getItem("dailyQuestsDate");
 
-  // Nouveau jour → nouveau tirage
   if (savedDate !== today) {
     const shuffled = [...dailyQuestsPool].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, 3);
@@ -69,13 +67,12 @@ function getDailyQuests() {
     localStorage.setItem("dailyQuests", JSON.stringify(selected));
     localStorage.setItem("dailyQuestsDate", today);
 
-    dailyCount = 0; // reset du compteur
+    dailyCount = 0;
   }
 
   return JSON.parse(localStorage.getItem("dailyQuests"));
 }
 
-// Affiche les quêtes journalières
 function renderDailyQuests() {
   const list = document.getElementById("dailyList");
   list.innerHTML = "";
@@ -92,17 +89,13 @@ function renderDailyQuests() {
   });
 }
 
-// Validation d’une quête journalière
 function completeDaily(box, name, reward) {
-
-  // Limite de 3 par jour
   if (dailyCount >= 3 && box.checked) {
     alert("Tu as déjà validé 3 quêtes journalières aujourd’hui !");
     box.checked = false;
     return;
   }
 
-  // Ajout des points
   if (box.checked) {
     points += reward;
     dailyCount++;
@@ -118,10 +111,9 @@ function completeDaily(box, name, reward) {
 }
 
 // ===========================================
-// ✅ SECTION 3 — QUÊTES PERSO (AJOUT & AFFICHAGE)
+// ✅ SECTION 3 — QUÊTES PERSO
 // ===========================================
 
-// Ajout d'une quête perso
 function addQuest() {
   const name = document.getElementById("questName").value.trim();
   const diff = parseInt(document.getElementById("difficulty").value);
@@ -151,7 +143,6 @@ function addQuest() {
   saveData();
 }
 
-// Affichage des quêtes perso
 function renderQuests() {
   const container = document.getElementById("quests");
   container.innerHTML = "";
@@ -183,7 +174,6 @@ function renderQuests() {
   });
 }
 
-// Annuler une quête perso
 function cancelQuest(i) {
   history.push(`❌ Quête annulée : ${quests[i].name}`);
 
@@ -196,10 +186,9 @@ function cancelQuest(i) {
 }
 
 // ===========================================
-// ✅ SECTION 4 — CHRONO + PROGRESS BAR + TIMER
+// ✅ SECTION 4 — CHRONO + PROGRESS BAR
 // ===========================================
 
-// Démarrer une quête
 function startQuest(i) {
   if (activeQuest !== null) {
     alert("Tu as déjà une quête en cours !");
@@ -216,7 +205,6 @@ function startQuest(i) {
   updateProgressBar(i);
 }
 
-// Met à jour la barre de progression + timer
 function updateProgressBar(i) {
   const quest = quests[i];
   const bar = document.getElementById(`progress-${i}`);
@@ -226,8 +214,6 @@ function updateProgressBar(i) {
   const start = quest.startTime;
 
   const interval = setInterval(() => {
-
-    // Si la quête a été supprimée → stop
     if (!quests[i]) {
       clearInterval(interval);
       return;
@@ -236,11 +222,9 @@ function updateProgressBar(i) {
     const elapsed = Date.now() - start;
     const remaining = Math.max(durationMs - elapsed, 0);
 
-    // Pourcentage de progression
     const percent = Math.min((elapsed / durationMs) * 100, 100);
     bar.style.width = percent + "%";
 
-    // Affichage du temps restant
     const minutes = Math.floor(remaining / 60000);
 
     if (minutes >= 60) {
@@ -251,7 +235,6 @@ function updateProgressBar(i) {
       timer.innerText = `⏳ Temps restant : ${minutes} min`;
     }
 
-    // Quand le temps est écoulé
     if (percent >= 100) {
       clearInterval(interval);
       timer.innerText = "✅ Temps écoulé";
@@ -260,7 +243,6 @@ function updateProgressBar(i) {
   }, 1000);
 }
 
-// Valider une quête perso
 function completeQuest(i) {
   const quest = quests[i];
 
@@ -270,7 +252,7 @@ function completeQuest(i) {
   }
 
   const elapsed = (Date.now() - quest.startTime) / 60000;
-  const minRequired = quest.duration * 0.9; // 90% du temps minimum
+  const minRequired = quest.duration * 0.9;
 
   if (elapsed < minRequired) {
     alert("Tu as terminé trop vite, ça ne compte pas !");
@@ -293,15 +275,13 @@ function completeQuest(i) {
 }
 
 // ===========================================
-// ✅ SECTION 5 — BOUTIQUE + PALIERS + END
+// ✅ SECTION 5 — BOUTIQUE + MINECRAFT
 // ===========================================
 
-// Retourne la liste des objets disponibles selon le nombre de quêtes terminées
 function getShopItems() {
   const completedQuests = history.filter(h => h.includes("Quête terminée")).length;
   const items = [];
 
-  // Palier 0–19
   items.push(
     {name:"STONE", label:"🪨 Pierre", cost:10},
     {name:"OAK_PLANKS", label:"🪵 Bois", cost:15},
@@ -310,7 +290,6 @@ function getShopItems() {
     {name:"BREAD", label:"🥖 Pain", cost:12}
   );
 
-  // Palier 20+
   if (completedQuests >= 20) {
     items.push(
       {name:"IRON_INGOT", label:"⛓️ Lingot de fer", cost:30},
@@ -320,7 +299,6 @@ function getShopItems() {
     );
   }
 
-  // Palier 40+
   if (completedQuests >= 40) {
     items.push(
       {name:"DIAMOND", label:"💎 Diamant", cost:50},
@@ -330,7 +308,6 @@ function getShopItems() {
     );
   }
 
-  // Palier 60+
   if (completedQuests >= 60) {
     items.push(
       {name:"NETHERITE_INGOT", label:"⚫ Netherite", cost:100},
@@ -339,7 +316,6 @@ function getShopItems() {
     );
   }
 
-  // Palier 140+ (END)
   if (completedQuests >= 140) {
     items.push(
       {name:"ENDER_PEARL", label:"🟣 Perle de l’Ender", cost:120},
@@ -352,7 +328,6 @@ function getShopItems() {
   return items;
 }
 
-// Affiche la boutique
 function renderShop() {
   const shopDiv = document.getElementById("shop");
   shopDiv.innerHTML = "";
@@ -368,8 +343,23 @@ function renderShop() {
   });
 }
 
-// Achat d’un objet
-function buyBlock(block, cost) {
+// ⭐⭐ FONCTION QUI ENVOIE LA COMMANDE À MINECRAFT ⭐⭐
+async function sendToMinecraft(block) {
+  try {
+    await fetch("https://TON-URL-RAILWAY/cmd", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        command: `give Nolan minecraft:${block.toLowerCase()} 1`,
+        key: "MaCleSecrete123"
+      })
+    });
+  } catch (err) {
+    console.log("Erreur API Minecraft :", err);
+  }
+}
+
+async function buyBlock(block, cost) {
   if (points < cost) {
     alert("Pas assez de points !");
     return;
@@ -384,17 +374,18 @@ function buyBlock(block, cost) {
 
   alert(`Objet ${block} acheté !`);
 
-  // Condition de victoire
+  // ⭐ Envoi à Minecraft
+  await sendToMinecraft(block);
+
   if (block === "ELYTRA" || block === "EYE_OF_ENDER") {
     alert("🏆 Félicitations ! Tu as atteint l'End et terminé le jeu !");
   }
 }
 
 // ===========================================
-// ✅ SECTION 6 — HISTORIQUE + RESET + PALIERS
+// ✅ SECTION 6 — HISTORIQUE + RESET
 // ===========================================
 
-// Affiche l'historique
 function renderHistory() {
   const ul = document.getElementById("history");
   ul.innerHTML = "";
@@ -404,14 +395,12 @@ function renderHistory() {
   });
 }
 
-// Supprime l'historique
 function clearHistory() {
   history = [];
   renderHistory();
   saveData();
 }
 
-// Reset complet du jeu
 function resetAll() {
   points = 0;
   quests = [];
@@ -419,7 +408,6 @@ function resetAll() {
   dailyCount = 0;
   activeQuest = null;
 
-  // Reset visuel
   document.getElementById("points").innerText = points;
   document.querySelectorAll(".daily input").forEach(cb => cb.checked = false);
 
@@ -430,7 +418,6 @@ function resetAll() {
   saveData();
 }
 
-// Message de palier (20, 40, 60, 140 quêtes terminées)
 function checkMilestone() {
   const completedQuests = history.filter(h => h.includes("Quête terminée")).length;
 
@@ -447,10 +434,7 @@ function checkMilestone() {
 // ✅ SECTION 7 — INITIALISATION FINALE
 // ===========================================
 
-// Charge les données sauvegardées
 loadData();
-
-// Affiche tout ce qui doit être visible au démarrage
 renderQuests();
 renderHistory();
 renderShop();
