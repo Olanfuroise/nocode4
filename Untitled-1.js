@@ -351,7 +351,7 @@ async function sendToMinecraft(block) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         command: `give Nolan minecraft:${block.toLowerCase()} 1`,
-        key: "MaCleSecrete123"
+        key: "123456789"
       })
     });
   } catch (err) {
@@ -439,4 +439,5 @@ renderQuests();
 renderHistory();
 renderShop();
 renderDailyQuests();
+
 
